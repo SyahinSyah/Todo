@@ -106,9 +106,9 @@ class Pages extends Component
      */
     private function generateSlug($value)
     {
-        $process1 = str_replace('','-',$value);
+        $process1 = str_replace(' ','-',$value);
         $process2 = strtolower($process1);
-        $this->slug = process2;
+        $this->slug = $process2;
     }
 
     /**
