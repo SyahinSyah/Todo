@@ -5,13 +5,16 @@ namespace App\Http\Livewire;
 use App\Models\Page;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Pages extends Component
 {
+    use WithPagination;
     public $modalFormVisible =true; //ni kena check balik apa dia cakap . tapi kena buat 
     public $slug;
     public $title;
     public $context;  
+    public $modelId;
 
     
     /**
@@ -55,8 +58,27 @@ class Pages extends Component
         $this->modalFormVisible =false; //hide model punya 
         $this->cleanVars();
     }
-
     
+    /**
+     * the livewire mount function
+     *
+     * @return void
+     */
+    public function mount()
+    {
+        //reset the pagination after reloading the page
+        $this->resetPage();
+    }
+
+
+
+    public function update()
+    {
+       // dd("Updating . . ");
+       $this->validate();
+       Page::find($this->modelId)->update($this->modelData());
+       $this->modalFormVisible =false;
+    }
 
     /** control shift i
      * show the form modal 
@@ -66,6 +88,8 @@ class Pages extends Component
      */
     public function createShowModal()
     {
+        $this->resetValidation();
+        $this->cleanVars();
         $this->modalFormVisible = true; 
     }
     
@@ -93,6 +117,7 @@ class Pages extends Component
      */
     public function cleanVars()
     {
+        $this->modelId=null;
         $this->title =null;
         $this->slug=null;
         $this->context= null;
@@ -111,6 +136,45 @@ class Pages extends Component
         $this->slug = $process2;
     }
 
+    
+    /**
+     * read
+     *
+     * @return void
+     */
+    public function read()
+    {
+        return Page::paginate(5);
+    }
+    
+    /**shows the form modal
+     * updateShowModal
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function updateShowModal($id)
+    {
+        $this->resetValidation();
+        $this->cleanVars();
+        $this-> modelId =$id;
+        $this->modalFormVisible =true;
+        $this->loadModal();
+    }
+    
+    /**load the model data of this component
+     * loadModal
+     *
+     * @return void
+     */
+    public function loadModal()
+    {
+        $data = Page::find($this->modelId);
+        $this->titile = $data->title;
+        $this->slug = $data->slug;
+        $this->content = $data->content;
+    }
+
     /**
      * the livewire render function.
      *
@@ -118,6 +182,9 @@ class Pages extends Component
      */
     public function render()
     {
-        return view('livewire.pages');
+        return view('livewire.pages',[
+            'data' => $this->read()
+
+        ]);
     }
 }
