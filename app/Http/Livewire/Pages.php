@@ -15,6 +15,7 @@ class Pages extends Component
     public $title;
     public $context;  
     public $modelId;
+    public $modalConfirmDelete =false;
 
     
     /**
@@ -59,6 +60,27 @@ class Pages extends Component
         $this->cleanVars();
     }
     
+    public function delete()
+    {
+        Page::destroy($this->modelId);
+        $this->modalConfirmDelete = false;
+        $this->resetPage();
+    }
+    
+    /**function ni show delete confirmation
+     * deleteShowModal
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function deleteShowModal($id)
+    {
+        $this->modalId = $id;
+        $this->modalConfirmDelete = true;
+
+    }
+
+
     /**
      * the livewire mount function
      *
@@ -170,9 +192,9 @@ class Pages extends Component
     public function loadModal()
     {
         $data = Page::find($this->modelId);
-        $this->titile = $data->title;
+        $this->title = $data->title;
         $this->slug = $data->slug;
-        $this->content = $data->content;
+        $this->context = $data->context;
     }
 
     /**
