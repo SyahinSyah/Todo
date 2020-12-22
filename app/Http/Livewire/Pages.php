@@ -28,7 +28,7 @@ class Pages extends Component
     {
         return [
             'title' => 'required',
-            'slug' => ['required',Rule::unique('pages', 'slug')],
+            'slug' => ['required',Rule::unique('pages', 'slug') -> ignore($this->modelId)],
             'context' => 'required',
         ];
     }

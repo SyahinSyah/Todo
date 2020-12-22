@@ -1,3 +1,4 @@
 <div>
-    {{-- Because she competes with no one, no one can compete with her. --}}
+   <h1> This is {{$title}} </h1> 
+   {!! $context !!}
 </div>
