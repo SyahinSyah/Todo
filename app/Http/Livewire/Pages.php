@@ -16,6 +16,8 @@ class Pages extends Component
     public $context;  
     public $modelId;
     public $modalConfirmDelete =false;
+    public $isSetToBeDefaultHomePage;
+    public $isSetToBeDefaultNotFoundPage;
 
     
     /**
@@ -127,11 +129,28 @@ class Pages extends Component
         return [
             'title'=> $this->title,
             'slug' => $this->slug,
-            'context' => $this->context
+            'context' => $this->context,
+            'is_default_home' => $this->isSetToBeDefaultHomePage,
+            'is_default_not_found' => $this->isSetToBeDefaultNotFoundPage, 
         ];
     }
 
     
+
+    public function updatedIsSetToDefaultHomePage()
+    {
+        $this->isSetToBeDefaultNotFoundPage =null;
+    }
+
+    public function updatedIsSetDefaultNotFoundPage()
+    {
+        $this->isSetToBeDefaultHomePage =null;
+    }
+    
+
+
+
+
     /**
      * Reset var to null balik
      *
@@ -143,6 +162,8 @@ class Pages extends Component
         $this->title =null;
         $this->slug=null;
         $this->context= null;
+        $this->isSetToBeDefaultNotFoundPage =null;
+        $this->isSetToBeDefaultHomePage=null;
     }
     
     /**
@@ -195,6 +216,10 @@ class Pages extends Component
         $this->title = $data->title;
         $this->slug = $data->slug;
         $this->context = $data->context;
+        $this->isSetToBeDefaultHomePage= !$data->is_default_home? null:true ;
+        $this->isSetToBeDefaultNotFoundPage =null;
+       
+
     }
 
     /**
