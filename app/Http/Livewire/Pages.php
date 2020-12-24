@@ -6,7 +6,7 @@ use App\Models\Page;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Str
+use Illuminate\Support\Str;
 
 class Pages extends Component
 {
@@ -46,7 +46,7 @@ class Pages extends Component
     public function updatedTitle($value)
     {
 
-        $this->generateSlug($value);
+        $this->slug = Str::slug($value);
 
     }
     
@@ -184,20 +184,6 @@ class Pages extends Component
     }
 
    
-    /**
-     * generateSlug a url sliug based on the title
-     *
-     * @param  mixed $value
-     * @return void
-     */
-    private function generateSlug($value)
-    {
-        $process1 = str_replace(' ','-',$value);
-        $process2 = strtolower($process1);
-        $this->slug = $process2;
-    }
-
-    
     /**
      * read
      *

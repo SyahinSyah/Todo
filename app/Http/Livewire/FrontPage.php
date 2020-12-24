@@ -33,7 +33,7 @@ class FrontPage extends Component
         else
         {
             //get the page according to the slug value
-            $data =Page::wher('slug',$urlslug)->first();
+            $data =Page::where('slug',$urlslug)->first();
 
              // if wen reteriece anything , let get default not found page.
             if(!$data)
@@ -43,10 +43,6 @@ class FrontPage extends Component
 
         }
         
-       
-
-
-        $data = Page::where('slug' ,$urlslug)->first();
         $this->title = $data->title;
         $this->context = $data->context;
 
