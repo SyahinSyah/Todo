@@ -6,6 +6,7 @@ use App\Models\Page;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Str
 
 class Pages extends Component
 {
@@ -48,7 +49,40 @@ class Pages extends Component
         $this->generateSlug($value);
 
     }
+    
+    /**unassign home page from the table
+     * unassignDefaultHomePage
+     *
+     * @return void
+     */
+    private function unassignDefaultHomePage()
+    {   
+        if($this->isSetToBeDefaultHomePage != null)
+        {
+            Page::where('is_default_home',true)->update([
+                    'is_default_home'=> false,
+            ]);
 
+        }
+
+    }
+
+    
+    /**unasign page not found for table 
+     * unassignDefaultNotFoundPage
+     *
+     * @return void
+     */
+    private function unassignDefaultNotFoundPage()
+    {   
+        if($this->isSetToBeDefaultNotFoundPage != null)
+        {
+            Page::where('is_default_not_found',true)->update([
+                    'is_default_not_found'=> false,
+            ]);
+            
+        }
+    }
     public function updatedIsSetToBeDefaultHomePage()
     {
         $this->isSetToBeDefaultNotFoundPage =null;
@@ -67,9 +101,11 @@ class Pages extends Component
     public function create()
     {
         $this->validate();
+        $this->unassignDefaultHomePage();
+        $this->unassignDefaultNotFoundPage();
         Page::create($this->modelData()); 
         $this->modalFormVisible =false; //hide model punya 
-        $this->cleanVars();
+        $this->reset();
     }
     
     public function delete()
@@ -110,6 +146,8 @@ class Pages extends Component
     {
        // dd("Updating . . ");
        $this->validate();
+       $this->unassignDefaultHomePage();
+       $this->unassignDefaultNotFoundPage();
        Page::find($this->modelId)->update($this->modelData());
        $this->modalFormVisible =false;
     }
@@ -123,7 +161,7 @@ class Pages extends Component
     public function createShowModal()
     {
         $this->resetValidation();
-        $this->cleanVars();
+        $this->reset();
         $this->modalFormVisible = true; 
     }
     
@@ -145,21 +183,7 @@ class Pages extends Component
         ];
     }
 
-    /**
-     * Reset var to null balik
-     *
-     * @return void
-     */
-    public function cleanVars()
-    {
-        $this->modelId=null;
-        $this->title =null;
-        $this->slug=null;
-        $this->context= null;
-        $this->isSetToBeDefaultNotFoundPage =null;
-        $this->isSetToBeDefaultHomePage=null;
-    }
-    
+   
     /**
      * generateSlug a url sliug based on the title
      *
@@ -193,7 +217,7 @@ class Pages extends Component
     public function updateShowModal($id)
     {
         $this->resetValidation();
-        $this->cleanVars();
+        $this->reset();
         $this-> modelId =$id;
         $this->modalFormVisible =true;
         $this->loadModal();
