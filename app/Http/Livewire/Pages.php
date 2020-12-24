@@ -48,6 +48,16 @@ class Pages extends Component
         $this->generateSlug($value);
 
     }
+
+    public function updatedIsSetToBeDefaultHomePage()
+    {
+        $this->isSetToBeDefaultNotFoundPage =null;
+    }
+
+    public function updatedIsSetToBeDefaultNotFoundPage()
+    {
+        $this->isSetToBeDefaultHomePage =null;
+    }
         
     /**
      * This for create into the database pages
@@ -135,22 +145,6 @@ class Pages extends Component
         ];
     }
 
-    
-
-    public function updatedIsSetToDefaultHomePage()
-    {
-        $this->isSetToBeDefaultNotFoundPage =null;
-    }
-
-    public function updatedIsSetDefaultNotFoundPage()
-    {
-        $this->isSetToBeDefaultHomePage =null;
-    }
-    
-
-
-
-
     /**
      * Reset var to null balik
      *
@@ -216,9 +210,8 @@ class Pages extends Component
         $this->title = $data->title;
         $this->slug = $data->slug;
         $this->context = $data->context;
-        $this->isSetToBeDefaultHomePage= !$data->is_default_home? null:true ;
-        $this->isSetToBeDefaultNotFoundPage =null;
-       
+        $this->isSetToBeDefaultHomePage= !$data->is_default_home ? null : true ;
+        $this->isSetToBeDefaultNotFoundPage =!$data->is_default_not_found ? null : true ;       
 
     }
 
